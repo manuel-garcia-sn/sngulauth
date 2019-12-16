@@ -7,8 +7,7 @@
 - **clientSecret**: client secret name that has been set up for the project
 - **redirectUri**: the redirect url to be redirected after successful credentials prompt (this url must be valid on keycloak client configuration)
 - **encryptionAlgorithm**: algorithm to decode the JWT information, default is RS256
-- **encryptionKey**: the public key content (without begin header and end footer, this is being added automatically by the package) to decrypt the JWT.
-
+- **encryptionKeyPath**: the public key file path in order to decrypt the JWT and get the user info.
 
 
 ### The auth process

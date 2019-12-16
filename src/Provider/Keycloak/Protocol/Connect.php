@@ -65,6 +65,7 @@ class Connect extends AbstractProvider
      */
     public function __construct(array $options = [], array $collaborators = [])
     {
+        $options['encryptionKey'] = file_get_contents($options['encryptionKeyPath']);
         parent::__construct($options, $collaborators);
     }
 
@@ -187,7 +188,7 @@ class Connect extends AbstractProvider
                 json_encode(
                     JWT::decode(
                         $response,
-                        $this->buildEncryptionKey(),
+                        $this->encryptionKey,
                         array($this->encryptionAlgorithm)
                     )
                 ),
@@ -196,15 +197,6 @@ class Connect extends AbstractProvider
         }
 
         throw EncryptionConfigurationException::undeterminedEncryption();
-    }
-
-    /**
-     * Add the footer/header to the encryption key provided by keycloak
-     * @return string
-     */
-    protected function buildEncryptionKey()
-    {
-        return "-----BEGIN PUBLIC KEY-----\n{$this->encryptionKey}\n-----END PUBLIC KEY-----";
     }
 
     /**
