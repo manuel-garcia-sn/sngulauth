@@ -106,6 +106,29 @@ class Connect extends AbstractProvider
     }
 
     /**
+     * Builds the logout URL.
+     *
+     * @param array $options
+     * @return string Authorization URL
+     */
+    public function getLogoutUrl(array $options = [])
+    {
+        $base = $this->getBaseLogoutUrl();
+        $params = $this->getAuthorizationParameters($options);
+        $query = $this->getAuthorizationQuery($params);
+        return $this->appendQuery($base, $query);
+    }
+    /**
+     * Get logout url to logout of session token
+     *
+     * @return string
+     */
+    private function getBaseLogoutUrl()
+    {
+        return $this->getIdentityProviderBaseUrl() . '/protocol/openid-connect/logout';
+    }
+
+    /**
      * Build the identity provider base url.
      *
      * @return string

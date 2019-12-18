@@ -112,4 +112,12 @@ class SessionHandler
     {
         unset($_SESSION[self::KEY_NAME]);
     }
+
+    /**
+     * @return AccessToken
+     */
+    public function getToken()
+    {
+        return $this->token;
+    }
 }
