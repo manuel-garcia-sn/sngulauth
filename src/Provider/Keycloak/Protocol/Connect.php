@@ -65,8 +65,20 @@ class Connect extends AbstractProvider
      */
     public function __construct(array $options = [], array $collaborators = [])
     {
-        $options['encryptionKey'] = file_get_contents($options['encryptionKeyPath']);
+        $options['encryptionKey'] = $this->buildPublicKeyWithFormat($options['encryptionKeyString']);
+
         parent::__construct($options, $collaborators);
+    }
+
+    /*
+    * Add the footer/header to the encryption key provided by keycloak
+    * @return string
+    */
+    protected function buildPublicKeyWithFormat($key)
+    {
+        $keyFormatted = chunk_split($key, 64, "\n");
+
+        return "-----BEGIN PUBLIC KEY-----\n{$keyFormatted}-----END PUBLIC KEY-----";
     }
 
     /**
@@ -113,11 +125,12 @@ class Connect extends AbstractProvider
      */
     public function getLogoutUrl(array $options = [])
     {
-        $base = $this->getBaseLogoutUrl();
+        $base   = $this->getBaseLogoutUrl();
         $params = $this->getAuthorizationParameters($options);
-        $query = $this->getAuthorizationQuery($params);
+        $query  = $this->getAuthorizationQuery($params);
         return $this->appendQuery($base, $query);
     }
+
     /**
      * Get logout url to logout of session token
      *
@@ -154,10 +167,10 @@ class Connect extends AbstractProvider
     /**
      * Checks a provider response for errors.
      *
-     * @throws IdentityProviderException
-     * @param  ResponseInterface $response
-     * @param  array|string $data Parsed response data
+     * @param ResponseInterface $response
+     * @param array|string $data Parsed response data
      * @return void
+     * @throws IdentityProviderException
      */
     protected function checkResponse(ResponseInterface $response, $data)
     {
@@ -171,8 +184,8 @@ class Connect extends AbstractProvider
      * Generates a resource owner object from a successful resource owner
      * details request.
      *
-     * @param  array $response
-     * @param  AccessToken $token
+     * @param array $response
+     * @param AccessToken $token
      * @return ResourceOwnerInterface|KeycloakResourceOwner
      */
     protected function createResourceOwner(array $response, AccessToken $token)
@@ -183,7 +196,7 @@ class Connect extends AbstractProvider
     /**
      * Requests and returns the resource owner of given access token.
      *
-     * @param  AccessToken $token
+     * @param AccessToken $token
      * @return KeycloakResourceOwner
      */
     public function getResourceOwner(AccessToken $token)
@@ -196,7 +209,7 @@ class Connect extends AbstractProvider
     /**
      * Attempts to decrypt the given response.
      *
-     * @param  string|array|null $response
+     * @param string|array|null $response
      *
      * @return string|array|null
      */
