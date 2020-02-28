@@ -24,9 +24,7 @@ $authUrl = $auth->getAuthorizationUrl();
 After user insert his credentials on Keycloak login page, it will be redirected to **redirectUri** parameter, with a code.
 Now you can fetch a token (League\OAuth2\Client\Token\AccessToken) against keycloak with those code:
 ```ruby
-$token = $auth->getAccessToken('authorization_code', [
-    code' => $_GET['code']
-]);
+$token = $auth->authByCode($_GET['code']);
 ```
 
 Now you can get the resource owner (the user data) against keycloak

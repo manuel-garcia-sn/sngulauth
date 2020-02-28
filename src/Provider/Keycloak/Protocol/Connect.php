@@ -31,14 +31,14 @@ class Connect extends AbstractProvider
      *
      * @var string
      */
-    public $authServerUrl = null;
+    protected $authServerUrl = null;
 
     /**
      * Realm name.
      *
      * @var string
      */
-    public $realm = null;
+    protected $realm = null;
 
     /**
      * Encryption algorithm.
@@ -49,14 +49,14 @@ class Connect extends AbstractProvider
      *
      * @var string
      */
-    public $encryptionAlgorithm = null;
+    protected $encryptionAlgorithm = null;
 
     /**
      * Encryption key.
      *
      * @var string
      */
-    public $encryptionKey = null;
+    protected $encryptionKey = null;
 
     /**
      * Connect constructor.
@@ -218,6 +218,10 @@ class Connect extends AbstractProvider
         if (!is_string($response)) {
             return $response;
         }
+
+        // Added some seconds in the iat/nbf token date validation
+        // Reference: https://github.com/auth0/auth0-PHP/issues/56#issuecomment-171944422
+        JWT::$leeway = 5;
 
         if ($this->usesEncryption()) {
             return json_decode(

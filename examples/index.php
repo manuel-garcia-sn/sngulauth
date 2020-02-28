@@ -32,9 +32,7 @@ if (!isset($_GET['code'])) {
     // Try to get an access token (using the authorization coe grant)
     try {
 
-        $token = $auth->getAccessToken('authorization_code', [
-            'code' => $_GET['code']
-        ]);
+        $token = $auth->authByCode($_GET['code']);
 
 
     } catch (Exception $e) {
