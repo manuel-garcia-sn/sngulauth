@@ -152,6 +152,23 @@ class Connect extends AbstractProvider
     }
 
     /**
+     * Builds the authorization URL for Docker Environments
+     * This method build the authorization url with a provided getBaseAuthorizationUrl ($url)
+     *
+     * @param string $url
+     * @param array $options
+     * @return string Authorization URL
+     */
+    public function getAuthorizationUrlDocker(string $url, array $options = [])
+    {
+        $base   = $url;
+        $params = $this->getAuthorizationParameters($options);
+        $query  = $this->getAuthorizationQuery($params);
+
+        return $this->appendQuery($base, $query);
+    }
+
+    /**
      * Returns the default scopes used by this provider.
      *
      * This should only be the scopes that are required to request the details

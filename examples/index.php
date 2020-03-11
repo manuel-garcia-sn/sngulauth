@@ -13,7 +13,13 @@ $auth = new Connect($config);
 $sessionHandler = new SessionHandler();
 
 if (!$sessionHandler->isAuthenticated()) {
+    // For docker hosts
+    $dockerHost = 'http://localhost:5000';
+    $authUrl = $auth->getAuthorizationUrlDocker($dockerHost);
+
+
     $authUrl = $auth->getAuthorizationUrl();
+
     echo "<p><a href='{$authUrl}' >Login</a></p>";
 } else {
     echo "<p>You are authenticated</p>";
