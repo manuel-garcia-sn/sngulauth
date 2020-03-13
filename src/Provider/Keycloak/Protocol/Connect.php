@@ -161,7 +161,7 @@ class Connect extends AbstractProvider
      */
     public function getAuthorizationUrlDocker(string $url, array $options = [])
     {
-        $base   = $url;
+        $base   = $url . '/realms/' . $this->realm . '/protocol/openid-connect/auth';
         $params = $this->getAuthorizationParameters($options);
         $query  = $this->getAuthorizationQuery($params);
 
