@@ -178,7 +178,7 @@ class Connect extends AbstractProvider
      */
     protected function getDefaultScopes()
     {
-        return ['name', 'email'];
+        return ['openid'];
     }
 
     /**
