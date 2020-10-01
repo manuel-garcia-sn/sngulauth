@@ -56,14 +56,21 @@ class KeycloakResourceOwner implements ResourceOwnerInterface
      */
     public function __construct(array $response)
     {
-        $this->subject         = $response['sub'];
-        $this->isEmailVerified = $response['email_verified'];
-        $this->fullName        = $response['name'];
-        $this->username        = $response['preferred_username'];
-        $this->email           = $response['email'];
-        $this->name            = $response['given_name'];
+        $this->subject         = $response['sub'] ?? '';
+        $this->isEmailVerified = $response['email_verified'] ?? '';
+        $this->fullName        = $response['name'] ?? '';
+        $this->username        = $response['preferred_username'] ?? '';
+        $this->email           = $response['email'] ?? '';
+        $this->name            = $response['given_name'] ?? '';
+        $this->roles = [];
 
-        $this->roles = array_merge($response['realm_access']['roles'], $response['resource_access']['account']['roles']);
+        if (isset($response['realm_access']['roles'])) {
+            $this->roles = array_merge($this->roles, $response['realm_access']['roles']);
+        }
+
+        if (isset($response['resource_access']['account']['roles'])) {
+            $this->roles = array_merge($this->roles, $response['resource_access']['account']['roles']);
+        }
     }
 
     /**
